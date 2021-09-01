@@ -27,6 +27,7 @@ namespace MediaExplorer
         public WindowMain()
         {
             InitializeComponent();
+            listView1.CheckBoxes = true;
         }
 
         private void WindowMain_Load(object sender, EventArgs e)
@@ -70,6 +71,7 @@ namespace MediaExplorer
                 try
                 {
                     ListViewItem lvi = new ListViewItem();
+                    lvi.UseItemStyleForSubItems = false;
                     lvi.Text = System.IO.Path.GetFileName(f);
 
                     MI.Open(f);
@@ -90,13 +92,22 @@ namespace MediaExplorer
                             if (!listView1.Columns.ContainsKey(k))
                             {
                                 ColumnHeader ch = new ColumnHeader();
+                                ch.Tag = sk;
                                 ch.Text = k;
+                                ch.Name = k;
                                 listView1.Columns.Add(ch);
+                                
                             }
 
-                            lvi.SubItems.Add(v);
-                            lvi.UseItemStyleForSubItems = false;
-                            lvi.SubItems[lvi.SubItems.Count-1].BackColor = GetBackgroundColor(sk);
+                            lvi.SubItems.Add("");   //add empty sub item, we will use indexes to set the value below
+
+                            int ci = listView1.Columns.IndexOfKey(k);   //get column index
+
+                            while (lvi.SubItems.Count <= ci)
+                                lvi.SubItems.Add("");   //add blank (filler) subitems if/where necessary
+                                
+                            lvi.SubItems[ci].Text = v;  //set value
+                            lvi.SubItems[ci].BackColor = GetBackgroundColor(sk);    //set cell background color
 
                         } else
                         {
@@ -129,7 +140,10 @@ namespace MediaExplorer
                     MI.Close();
                     listView1.Items.Add(lvi);
                 }
-                catch (Exception) { }
+                catch (Exception ex) {
+                    Console.WriteLine(listView1.GetType());
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 
@@ -148,7 +162,7 @@ namespace MediaExplorer
             else if (sk == StreamKind.Text)
                 return Color.Lavender;
             else if (sk == StreamKind.Video)
-                return Color.Khaki;
+                return Color.SkyBlue;
 
             return Color.White;
         }
