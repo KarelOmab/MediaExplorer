@@ -29,20 +29,262 @@ namespace MediaExplorer
         /// </summary>
         private void InitializeComponent()
         {
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tablePanRoot = new System.Windows.Forms.TableLayoutPanel();
+            this.tablePanToolbar = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ButtonUp = new System.Windows.Forms.Button();
+            this.ButtonForward = new System.Windows.Forms.Button();
+            this.ButtonBack = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ButtonRefresh = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TextBoxPath = new System.Windows.Forms.TextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.menuStrip1.SuspendLayout();
+            this.tablePanRoot.SuspendLayout();
+            this.tablePanToolbar.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1050, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // tablePanRoot
+            // 
+            this.tablePanRoot.ColumnCount = 1;
+            this.tablePanRoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tablePanRoot.Controls.Add(this.tablePanToolbar, 0, 0);
+            this.tablePanRoot.Controls.Add(this.splitContainer1, 0, 2);
+            this.tablePanRoot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanRoot.Location = new System.Drawing.Point(0, 24);
+            this.tablePanRoot.Name = "tablePanRoot";
+            this.tablePanRoot.RowCount = 3;
+            this.tablePanRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tablePanRoot.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tablePanRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tablePanRoot.Size = new System.Drawing.Size(1050, 636);
+            this.tablePanRoot.TabIndex = 1;
+            // 
+            // tablePanToolbar
+            // 
+            this.tablePanToolbar.ColumnCount = 4;
+            this.tablePanToolbar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tablePanToolbar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.82353F));
+            this.tablePanToolbar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.41176F));
+            this.tablePanToolbar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.76471F));
+            this.tablePanToolbar.Controls.Add(this.panel1, 0, 0);
+            this.tablePanToolbar.Controls.Add(this.tableLayoutPanel1, 1, 0);
+            this.tablePanToolbar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanToolbar.Location = new System.Drawing.Point(3, 3);
+            this.tablePanToolbar.Name = "tablePanToolbar";
+            this.tablePanToolbar.RowCount = 1;
+            this.tablePanToolbar.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tablePanToolbar.Size = new System.Drawing.Size(1044, 34);
+            this.tablePanToolbar.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.ButtonUp);
+            this.panel1.Controls.Add(this.ButtonForward);
+            this.panel1.Controls.Add(this.ButtonBack);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(85, 28);
+            this.panel1.TabIndex = 2;
+            // 
+            // ButtonUp
+            // 
+            this.ButtonUp.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ButtonUp.Location = new System.Drawing.Point(56, 0);
+            this.ButtonUp.Name = "ButtonUp";
+            this.ButtonUp.Padding = new System.Windows.Forms.Padding(3);
+            this.ButtonUp.Size = new System.Drawing.Size(28, 28);
+            this.ButtonUp.TabIndex = 5;
+            this.ButtonUp.Text = "U";
+            this.ButtonUp.UseVisualStyleBackColor = true;
+            // 
+            // ButtonForward
+            // 
+            this.ButtonForward.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ButtonForward.Location = new System.Drawing.Point(28, 0);
+            this.ButtonForward.Name = "ButtonForward";
+            this.ButtonForward.Padding = new System.Windows.Forms.Padding(3);
+            this.ButtonForward.Size = new System.Drawing.Size(28, 28);
+            this.ButtonForward.TabIndex = 4;
+            this.ButtonForward.Text = "F";
+            this.ButtonForward.UseVisualStyleBackColor = true;
+            // 
+            // ButtonBack
+            // 
+            this.ButtonBack.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ButtonBack.Location = new System.Drawing.Point(0, 0);
+            this.ButtonBack.Name = "ButtonBack";
+            this.ButtonBack.Padding = new System.Windows.Forms.Padding(3);
+            this.ButtonBack.Size = new System.Drawing.Size(28, 28);
+            this.ButtonBack.TabIndex = 3;
+            this.ButtonBack.Text = "B";
+            this.ButtonBack.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.ButtonRefresh, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(91, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(560, 34);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // ButtonRefresh
+            // 
+            this.ButtonRefresh.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButtonRefresh.Location = new System.Drawing.Point(529, 3);
+            this.ButtonRefresh.Name = "ButtonRefresh";
+            this.ButtonRefresh.Padding = new System.Windows.Forms.Padding(3);
+            this.ButtonRefresh.Size = new System.Drawing.Size(28, 28);
+            this.ButtonRefresh.TabIndex = 13;
+            this.ButtonRefresh.Text = "R";
+            this.ButtonRefresh.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.TextBoxPath, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(526, 34);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // TextBoxPath
+            // 
+            this.TextBoxPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TextBoxPath.Location = new System.Drawing.Point(0, 7);
+            this.TextBoxPath.Margin = new System.Windows.Forms.Padding(0);
+            this.TextBoxPath.Name = "TextBoxPath";
+            this.TextBoxPath.Size = new System.Drawing.Size(526, 20);
+            this.TextBoxPath.TabIndex = 15;
+            this.TextBoxPath.Text = "D:\\Disk1\\Example";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 43);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.listView1);
+            this.splitContainer1.Size = new System.Drawing.Size(1044, 590);
+            this.splitContainer1.SplitterDistance = 211;
+            this.splitContainer1.TabIndex = 1;
+            // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(0, 0);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(829, 590);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
             // 
             // WindowMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1050, 660);
+            this.Controls.Add(this.tablePanRoot);
+            this.Controls.Add(this.menuStrip1);
             this.Name = "WindowMain";
-            this.Text = "Form1";
+            this.Text = "MediaExplorer";
+            this.Load += new System.EventHandler(this.WindowMain_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.tablePanRoot.ResumeLayout(false);
+            this.tablePanToolbar.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tablePanRoot;
+        private System.Windows.Forms.TableLayoutPanel tablePanToolbar;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button ButtonBack;
+        private System.Windows.Forms.Button ButtonForward;
+        private System.Windows.Forms.Button ButtonUp;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button ButtonRefresh;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TextBox TextBoxPath;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 
