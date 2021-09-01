@@ -44,6 +44,7 @@ namespace MediaExplorer
             this.TextBoxPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.tablePanRoot.SuspendLayout();
             this.tablePanToolbar.SuspendLayout();
@@ -51,6 +52,7 @@ namespace MediaExplorer
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
@@ -132,6 +134,7 @@ namespace MediaExplorer
             this.ButtonUp.TabIndex = 5;
             this.ButtonUp.Text = "U";
             this.ButtonUp.UseVisualStyleBackColor = true;
+            this.ButtonUp.Click += new System.EventHandler(this.ButtonUp_Click);
             // 
             // ButtonForward
             // 
@@ -143,6 +146,7 @@ namespace MediaExplorer
             this.ButtonForward.TabIndex = 4;
             this.ButtonForward.Text = "F";
             this.ButtonForward.UseVisualStyleBackColor = true;
+            this.ButtonForward.Click += new System.EventHandler(this.ButtonForward_Click);
             // 
             // ButtonBack
             // 
@@ -154,6 +158,7 @@ namespace MediaExplorer
             this.ButtonBack.TabIndex = 3;
             this.ButtonBack.Text = "B";
             this.ButtonBack.UseVisualStyleBackColor = true;
+            this.ButtonBack.Click += new System.EventHandler(this.ButtonBack_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -181,6 +186,7 @@ namespace MediaExplorer
             this.ButtonRefresh.TabIndex = 13;
             this.ButtonRefresh.Text = "R";
             this.ButtonRefresh.UseVisualStyleBackColor = true;
+            this.ButtonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -208,12 +214,17 @@ namespace MediaExplorer
             this.TextBoxPath.Size = new System.Drawing.Size(526, 20);
             this.TextBoxPath.TabIndex = 15;
             this.TextBoxPath.Text = "D:\\Disk1\\Example";
+            this.TextBoxPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxPath_KeyDown);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(3, 43);
             this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
             // 
             // splitContainer1.Panel2
             // 
@@ -235,6 +246,14 @@ namespace MediaExplorer
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(211, 590);
+            this.treeView1.TabIndex = 1;
+            // 
             // WindowMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -253,6 +272,7 @@ namespace MediaExplorer
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -278,6 +298,7 @@ namespace MediaExplorer
         private System.Windows.Forms.TextBox TextBoxPath;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 

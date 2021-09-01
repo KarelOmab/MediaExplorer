@@ -296,5 +296,33 @@ namespace MediaExplorer
             Console.WriteLine("Container format is " + MI.Get(StreamKind.General, 0, "Format"));
             return "Container format is " + MI.Get(StreamKind.General, 0, "Format");
         }
+
+        private void ButtonBack_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TODO");
+        }
+
+        private void ButtonForward_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TODO");
+        }
+
+        private void ButtonUp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TODO");
+        }
+
+        private void ButtonRefresh_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TODO");
+        }
+
+        private void TextBoxPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                MessageBox.Show("TODO");
+            }
+        }
     }
 }
