@@ -1,0 +1,101 @@
+Inform with Complete=true
+General
+Count                                    : 331
+Count of stream of this kind             : 1
+Kind of stream                           : General
+Kind of stream                           : General
+Stream identifier                        : 0
+Count of video streams                   : 1
+Video_Format_List                        : RGB
+Video_Format_WithHint_List               : RGB
+Codecs Video                             : RGB
+Complete name                            : D:\Disk1\Example\Example.avi
+Folder name                              : D:\Disk1\Example
+File name extension                      : Example.avi
+File name                                : Example
+File extension                           : avi
+Format                                   : AVI
+Format                                   : AVI
+Format/Info                              : Audio Video Interleave
+Format/Extensions usually used           : avi
+Commercial name                          : AVI
+Format profile                           : OpenDML
+Internet media type                      : video/vnd.avi
+File size                                : 1698703598
+File size                                : 1.58 GiB
+File size                                : 2 GiB
+File size                                : 1.6 GiB
+File size                                : 1.58 GiB
+File size                                : 1.582 GiB
+Duration                                 : 10001
+Duration                                 : 10 s 1 ms
+Duration                                 : 10 s 1 ms
+Duration                                 : 10 s 1 ms
+Duration                                 : 00:00:10.001
+Duration                                 : 00:00:10:00
+Duration                                 : 00:00:10.001 (00:00:10:00)
+Overall bit rate                         : 1358826996
+Overall bit rate                         : 1 359 Mb/s
+Frame rate                               : 18.000
+Frame rate                               : 18.000 FPS
+Frame count                              : 180
+Stream size                              : 10478
+Stream size                              : 10.2 KiB (0%)
+Stream size                              : 10 KiB
+Stream size                              : 10 KiB
+Stream size                              : 10.2 KiB
+Stream size                              : 10.23 KiB
+Stream size                              : 10.2 KiB (0%)
+Proportion of this stream                : 0.00001
+File creation date                       : UTC 2021-09-01 18:34:21.157
+File creation date (local)               : 2021-09-01 14:34:21.157
+File last modification date              : UTC 2021-04-26 19:13:38.000
+File last modification date (local)      : 2021-04-26 15:13:38.000
+Writing application                      : Lavf58.45.100
+Writing application                      : Lavf58.45.100
+
+Video
+Count                                    : 377
+Count of stream of this kind             : 1
+Kind of stream                           : Video
+Kind of stream                           : Video
+Stream identifier                        : 0
+ID                                       : 0
+ID                                       : 0
+Format                                   : RGB
+Format                                   : RGB
+Commercial name                          : RGB
+Codec ID                                 : 0x00000000
+Codec ID/Info                            : Basic Windows bitmap format. 1, 4 and 8 bpp versions are palettised. 16, 24 and 32bpp contain raw RGB samples
+Codec ID/Url                             : http://www.fourcc.org/indexrgb.htm
+Duration                                 : 10001
+Duration                                 : 10 s 1 ms
+Duration                                 : 10 s 1 ms
+Duration                                 : 10 s 1 ms
+Duration                                 : 00:00:10.001
+Duration                                 : 00:00:10:00
+Duration                                 : 00:00:10.001 (00:00:10:00)
+Bit rate                                 : 1358818614
+Bit rate                                 : 1 359 Mb/s
+Width                                    : 2048
+Width                                    : 2 048 pixels
+Height                                   : 1536
+Height                                   : 1 536 pixels
+Pixel aspect ratio                       : 1.000
+Display aspect ratio                     : 1.333
+Display aspect ratio                     : 4:3
+Frame rate                               : 18.000
+Frame rate                               : 18.000 FPS
+Frame count                              : 180
+Color space                              : RGB
+Bit depth                                : 8
+Bit depth                                : 8 bits
+Bits/(Pixel*Frame)                       : 23.998
+Stream size                              : 1698693120
+Stream size                              : 1.58 GiB (100%)
+Stream size                              : 2 GiB
+Stream size                              : 1.6 GiB
+Stream size                              : 1.58 GiB
+Stream size                              : 1.582 GiB
+Stream size                              : 1.58 GiB (100%)
+Proportion of this stream                : 0.99999
