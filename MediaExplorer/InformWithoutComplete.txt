@@ -1,0 +1,25 @@
+General
+Complete name                            : D:\Disk1\Example\Example.avi
+Format                                   : AVI
+Format/Info                              : Audio Video Interleave
+Format profile                           : OpenDML
+File size                                : 1.58 GiB
+Duration                                 : 10 s 1 ms
+Overall bit rate                         : 1 359 Mb/s
+Writing application                      : Lavf58.45.100
+
+Video
+ID                                       : 0
+Format                                   : RGB
+Codec ID                                 : 0x00000000
+Codec ID/Info                            : Basic Windows bitmap format. 1, 4 and 8 bpp versions are palettised. 16, 24 and 32bpp contain raw RGB samples
+Duration                                 : 10 s 1 ms
+Bit rate                                 : 1 359 Mb/s
+Width                                    : 2 048 pixels
+Height                                   : 1 536 pixels
+Display aspect ratio                     : 4:3
+Frame rate                               : 18.000 FPS
+Color space                              : RGB
+Bit depth                                : 8 bits
+Bits/(Pixel*Frame)                       : 23.998
+Stream size                              : 1.58 GiB (100%)

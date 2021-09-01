@@ -20,7 +20,10 @@ namespace MediaExplorer
             get { return _path; }
             set { _path = value; }
         }
+
+        MediaInfo MI = new MediaInfo();
         
+
         public WindowMain()
         {
             InitializeComponent();
@@ -28,6 +31,14 @@ namespace MediaExplorer
 
         private void WindowMain_Load(object sender, EventArgs e)
         {
+
+            string v = MI.Option("Info_Version", "0.7.0.0;MediaInfoDLL_Example_CS;0.7.0.0");
+            if (v.Length == 0)
+            {
+                MessageBox.Show("MediaInfo.Dll: this version of the DLL is not compatible");
+                return;
+            }
+
             LoadMediaData();
         }
 
@@ -37,50 +48,125 @@ namespace MediaExplorer
                 Path = TextBoxPath.Text;
 
             listView1.Items.Clear();
+            //listView1.Columns.Clear();
 
             if (Directory.Exists(Path))
                 foreach(string f in Directory.GetFiles(Path))
                     HandleFile(f);
 
             if (listView1.Items.Count > 0)
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void HandleFile(string f)
         {
-            ListViewItem lvi = new ListViewItem();
-            lvi.Text = System.IO.Path.GetFileName(f);
+            MediaQuery(f);
+        }
 
-            ExampleQuery(f);
-            ExampleWithStream(f);
+        private void MediaQuery(string f, bool isComplete=true)
+        {
+            if (File.Exists(f))
+            {
+                try
+                {
+                    ListViewItem lvi = new ListViewItem();
+                    lvi.Text = System.IO.Path.GetFileName(f);
 
+                    MI.Open(f);
 
+                    if (isComplete) MI.Option("Complete", "1");
 
-            listView1.Items.Add(lvi);
+                    string info = MI.Inform();
+                    StreamKind sk = new StreamKind();
+
+                    foreach (string line in info.Split('\n'))
+                    {
+                        if (line.Contains(":"))
+                        {
+                            string[] kv = line.Split(':');
+                            string k = kv[0].Trim();
+                            string v = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
+
+                            if (!listView1.Columns.ContainsKey(k))
+                            {
+                                ColumnHeader ch = new ColumnHeader();
+                                ch.Text = k;
+                                listView1.Columns.Add(ch);
+                            }
+
+                            lvi.SubItems.Add(v);
+                            lvi.UseItemStyleForSubItems = false;
+                            lvi.SubItems[lvi.SubItems.Count-1].BackColor = GetBackgroundColor(sk);
+
+                        } else
+                        {
+                            switch (line.Trim())
+                            {
+                                case "Audio":
+                                    sk = StreamKind.Audio;
+                                    break;
+                                case "General":
+                                    sk = StreamKind.General;
+                                    break;
+                                case "Image":
+                                    sk = StreamKind.Image;
+                                    break;
+                                case "Menu":
+                                    sk = StreamKind.Menu;
+                                    break;
+                                case "Other":
+                                    sk = StreamKind.Other;
+                                    break;
+                                case "Text":
+                                    sk = StreamKind.Text;
+                                    break;
+                                case "Video":
+                                    sk = StreamKind.Video;
+                                    break;
+                            }
+                        } 
+                    }
+                    MI.Close();
+                    listView1.Items.Add(lvi);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private Color GetBackgroundColor(StreamKind sk)
+        {
+            if (sk == StreamKind.Audio)
+                return Color.Beige;
+            else if (sk == StreamKind.General)
+                return Color.White;
+            else if (sk == StreamKind.Image)
+                return Color.Azure;
+            else if (sk == StreamKind.Menu)
+                return Color.Firebrick;
+            else if (sk == StreamKind.Other)
+                return Color.ForestGreen;
+            else if (sk == StreamKind.Text)
+                return Color.Lavender;
+            else if (sk == StreamKind.Video)
+                return Color.Khaki;
+
+            return Color.White;
         }
 
         private void ExampleQuery(string f)
         {
             //Test if version of DLL is compatible : 3rd argument is "version of DLL tested;Your application name;Your application version"
-            String ToDisplay;
-            MediaInfo MI = new MediaInfo();
-
-            ToDisplay = MI.Option("Info_Version", "0.7.0.0;MediaInfoDLL_Example_CS;0.7.0.0");
-            if (ToDisplay.Length == 0)
-            {
-                MessageBox.Show("MediaInfo.Dll: this version of the DLL is not compatible");
-                return;
-            }
+            String ToDisplay = string.Empty;
 
             //Information about MediaInfo
-            ToDisplay += "\r\n\r\nInfo_Parameters\r\n";
-            ToDisplay += MI.Option("Info_Parameters");
+            //ToDisplay += "\r\n\r\nInfo_Parameters\r\n";
+            //ToDisplay += MI.Option("Info_Parameters");
 
-            ToDisplay += "\r\n\r\nInfo_Capacities\r\n";
-            ToDisplay += MI.Option("Info_Capacities");
+            //ToDisplay += "\r\n\r\nInfo_Capacities\r\n";
+            //ToDisplay += MI.Option("Info_Capacities");
 
-            ToDisplay += "\r\n\r\nInfo_Codecs\r\n";
-            ToDisplay += MI.Option("Info_Codecs");
+            //ToDisplay += "\r\n\r\nInfo_Codecs\r\n";
+            //ToDisplay += MI.Option("Info_Codecs");
 
             //An example of how to use the library
             ToDisplay += "\r\n\r\nOpen\r\n";
@@ -90,30 +176,30 @@ namespace MediaExplorer
             MI.Option("Complete");
             ToDisplay += MI.Inform();
 
-            ToDisplay += "\r\n\r\nInform with Complete=true\r\n";
-            MI.Option("Complete", "1");
-            ToDisplay += MI.Inform();
+            //ToDisplay += "\r\n\r\nInform with Complete=true\r\n";
+            //MI.Option("Complete", "1");
+            //ToDisplay += MI.Inform();
 
-            ToDisplay += "\r\n\r\nCustom Inform\r\n";
-            MI.Option("Inform", "General;File size is %FileSize% bytes");
-            ToDisplay += MI.Inform();
+            //ToDisplay += "\r\n\r\nCustom Inform\r\n";
+            //MI.Option("Inform", "General;File size is %FileSize% bytes");
+            //ToDisplay += MI.Inform();
 
-            ToDisplay += "\r\n\r\nGet with Stream=General and Parameter='FileSize'\r\n";
-            ToDisplay += MI.Get(0, 0, "FileSize");
+            //ToDisplay += "\r\n\r\nGet with Stream=General and Parameter='FileSize'\r\n";
+            //ToDisplay += MI.Get(0, 0, "FileSize");
 
-            ToDisplay += "\r\n\r\nGet with Stream=General and Parameter=46\r\n";
-            ToDisplay += MI.Get(0, 0, 46);
+            //ToDisplay += "\r\n\r\nGet with Stream=General and Parameter=46\r\n";
+            //ToDisplay += MI.Get(0, 0, 46);
 
-            ToDisplay += "\r\n\r\nCount_Get with StreamKind=Stream_Audio\r\n";
-            ToDisplay += MI.Count_Get(StreamKind.Audio);
+            //ToDisplay += "\r\n\r\nCount_Get with StreamKind=Stream_Audio\r\n";
+            //ToDisplay += MI.Count_Get(StreamKind.Audio);
 
-            ToDisplay += "\r\n\r\nGet with Stream=General and Parameter='AudioCount'\r\n";
-            ToDisplay += MI.Get(StreamKind.General, 0, "AudioCount");
+            //ToDisplay += "\r\n\r\nGet with Stream=General and Parameter='AudioCount'\r\n";
+            //ToDisplay += MI.Get(StreamKind.General, 0, "AudioCount");
 
-            ToDisplay += "\r\n\r\nGet with Stream=Audio and Parameter='StreamCount'\r\n";
-            ToDisplay += MI.Get(StreamKind.Audio, 0, "StreamCount");
+            //ToDisplay += "\r\n\r\nGet with Stream=Audio and Parameter='StreamCount'\r\n";
+            //ToDisplay += MI.Get(StreamKind.Audio, 0, "StreamCount");
 
-            ToDisplay += "\r\n\r\nClose\r\n";
+            //ToDisplay += "\r\n\r\nClose\r\n";
             MI.Close();
 
             //Example with a stream
@@ -123,7 +209,6 @@ namespace MediaExplorer
             Console.WriteLine(ToDisplay);
             //richTextBox1.Text = ToDisplay;
         }
-
         String ExampleWithStream(string f)
         {
             //Initilaizing MediaInfo
