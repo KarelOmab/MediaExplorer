@@ -1,5 +1,8 @@
 # MediaExplorer
 MediaExplorer is a windows application that effectively combines explorer.exe and MediaInfo library.
+ - C# WinForms
+ - .NET Framework 4.8
+ - MediaInfoLib v x.y
 
 # Download
 
