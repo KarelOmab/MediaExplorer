@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.ListViewItem;
 
 namespace MediaExplorer
 {
@@ -22,7 +23,9 @@ namespace MediaExplorer
         }
 
         MediaInfo MI = new MediaInfo();
-        
+
+        List<Parameter> lParams = new List<Parameter>();
+
 
         public WindowMain()
         {
@@ -39,8 +42,70 @@ namespace MediaExplorer
                 MessageBox.Show("MediaInfo.Dll: this version of the DLL is not compatible");
                 return;
             }
-
+            LoadParams();
+            LoadColumns();
             LoadMediaData();
+        }
+
+        private void LoadParams()
+        {
+            StreamKind sk = StreamKind.General;
+            int i = 0;
+
+            foreach (string line in MI.Option("Info_Parameters").Split('\n'))
+            {
+                if (line.Contains(":"))
+                {
+                    string[] kv = line.Split(':');
+                    string k = kv[0].Trim();
+                    string d = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
+
+                    //Inform is a special keyword that returns new dictionary (duplicate)
+                    if (k != "Inform")
+                        lParams.Add(new Parameter(i, k, d, sk));
+
+                } else
+                {
+                    switch (line.Trim())
+                    {
+                        case "Audio":
+                            sk = StreamKind.Audio;
+                            break;
+                        case "General":
+                            sk = StreamKind.General;
+                            break;
+                        case "Image":
+                            sk = StreamKind.Image;
+                            break;
+                        case "Menu":
+                            sk = StreamKind.Menu;
+                            break;
+                        case "Other":
+                            sk = StreamKind.Other;
+                            break;
+                        case "Text":
+                            sk = StreamKind.Text;
+                            break;
+                        case "Video":
+                            sk = StreamKind.Video;
+                            break;
+                        default:
+                            if (line.Trim().Length > 0)
+                            {
+                                lParams.Add(new Parameter(i, line, string.Empty, sk));
+                            }
+                            break;
+                    }
+                }
+                i++;
+            }
+        }
+
+        private void LoadColumns()
+        {
+            listView1.Columns.Add(new ColumnHeader() { Text = "Name"});
+            foreach (Parameter p in lParams)
+                listView1.Columns.Add(new ColumnHeader() { Text = p.Key, Name = p.Index.ToString(), Width = 0 });
         }
 
         private void LoadMediaData()
@@ -49,99 +114,61 @@ namespace MediaExplorer
                 Path = TextBoxPath.Text;
 
             listView1.Items.Clear();
-            //listView1.Columns.Clear();
 
             if (Directory.Exists(Path))
-                foreach(string f in Directory.GetFiles(Path))
+                foreach (string f in Directory.GetFiles(Path))
                     HandleFile(f);
 
-            if (listView1.Items.Count > 0)
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            listView1.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void HandleFile(string f)
-        {
-            MediaQuery(f);
-        }
-
-        private void MediaQuery(string f, bool isComplete=true)
         {
             if (File.Exists(f))
             {
                 try
                 {
+                    List<int> ints = new List<int>();
                     ListViewItem lvi = new ListViewItem();
                     lvi.UseItemStyleForSubItems = false;
                     lvi.Text = System.IO.Path.GetFileName(f);
 
+                    foreach(ColumnHeader ch in listView1.Columns)
+                        lvi.SubItems.Add("");   //fill data
+
                     MI.Open(f);
 
-                    if (isComplete) MI.Option("Complete", "1");
-
-                    string info = MI.Inform();
-                    StreamKind sk = new StreamKind();
-
-                    foreach (string line in info.Split('\n'))
+                    foreach(StreamKind sk in Enum.GetValues(typeof(StreamKind)))
                     {
-                        if (line.Contains(":"))
+                        for (int i=0; i < MI.Count_Get(sk); i++)
                         {
-                            string[] kv = line.Split(':');
-                            string k = kv[0].Trim();
-                            string v = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
-
-                            if (!listView1.Columns.ContainsKey(k))
+                            foreach (Parameter p in lParams.FindAll(s => s.StreamKind == sk))
                             {
-                                ColumnHeader ch = new ColumnHeader();
-                                ch.Tag = sk;
-                                ch.Text = k;
-                                ch.Name = k;
-                                listView1.Columns.Add(ch);
-                                
-                            }
+                                string v = MI.Get(sk, i, p.Key);
 
-                            lvi.SubItems.Add("");   //add empty sub item, we will use indexes to set the value below
-
-                            int ci = listView1.Columns.IndexOfKey(k);   //get column index
-
-                            while (lvi.SubItems.Count <= ci)
-                                lvi.SubItems.Add("");   //add blank (filler) subitems if/where necessary
-                                
-                            lvi.SubItems[ci].Text = v;  //set value
-                            lvi.SubItems[ci].BackColor = GetBackgroundColor(sk);    //set cell background color
-
-                        } else
-                        {
-                            switch (line.Trim())
-                            {
-                                case "Audio":
-                                    sk = StreamKind.Audio;
-                                    break;
-                                case "General":
-                                    sk = StreamKind.General;
-                                    break;
-                                case "Image":
-                                    sk = StreamKind.Image;
-                                    break;
-                                case "Menu":
-                                    sk = StreamKind.Menu;
-                                    break;
-                                case "Other":
-                                    sk = StreamKind.Other;
-                                    break;
-                                case "Text":
-                                    sk = StreamKind.Text;
-                                    break;
-                                case "Video":
-                                    sk = StreamKind.Video;
-                                    break;
+                                if (v.Trim().Length > 0)
+                                {
+                                    //Console.WriteLine(string.Format("{0} -> {1}", p.Key, v));
+                                    int ci = listView1.Columns.IndexOfKey(p.Index.ToString());
+                                    lvi.SubItems[ci].Text = v;  //set cell data
+                                    lvi.SubItems[ci].BackColor = GetBackgroundColor(sk);
+                                    ints.Add(ci);
+                                }
                             }
                         } 
                     }
                     MI.Close();
                     listView1.Items.Add(lvi);
+
+                    foreach(int i in ints)
+                    {
+                        if (lvi.SubItems[i].Text.Length > listView1.Columns[i].Text.Length)
+                            listView1.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.ColumnContent);
+                        else listView1.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.HeaderSize);
+                    }
                 }
-                catch (Exception ex) {
-                    Console.WriteLine(listView1.GetType());
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.Message);
                 }
             }
@@ -166,6 +193,7 @@ namespace MediaExplorer
 
             return Color.White;
         }
+
 
         private void ExampleQuery(string f)
         {
