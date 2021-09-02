@@ -6,7 +6,7 @@ MediaExplorer is a windows application that effectively combines explorer and Me
 
 # Download
 
-Download the latest version [click here](https://www.download.here/todo)
+Download the latest version (1.0.0.1) [click here](https://github.com/KarelOmab/MediaExplorer/releases/download/Publish/MediaExplorer_1.0.0.1.zip)
 
 # Latest Changes
 September 2, 2021
