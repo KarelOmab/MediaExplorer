@@ -29,6 +29,7 @@ namespace MediaExplorer
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +47,8 @@ namespace MediaExplorer
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.listView1 = new System.Windows.Forms.ListView();
             this.lblLoading = new System.Windows.Forms.Label();
+            this.contextMenuTree = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.scanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tablePanRoot.SuspendLayout();
             this.tablePanToolbar.SuspendLayout();
@@ -56,6 +59,7 @@ namespace MediaExplorer
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.contextMenuTree.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -241,8 +245,8 @@ namespace MediaExplorer
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(211, 590);
             this.treeView1.TabIndex = 1;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
+            this.treeView1.Click += new System.EventHandler(this.TreeView1_Click);
             // 
             // listView1
             // 
@@ -270,6 +274,20 @@ namespace MediaExplorer
             this.lblLoading.Text = "Loading...";
             this.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // contextMenuTree
+            // 
+            this.contextMenuTree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.scanToolStripMenuItem});
+            this.contextMenuTree.Name = "contextMenuTree";
+            this.contextMenuTree.Size = new System.Drawing.Size(181, 48);
+            // 
+            // scanToolStripMenuItem
+            // 
+            this.scanToolStripMenuItem.Name = "scanToolStripMenuItem";
+            this.scanToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.scanToolStripMenuItem.Text = "Scan";
+            this.scanToolStripMenuItem.Click += new System.EventHandler(this.ScanToolStripMenuItem_Click);
+            // 
             // WindowMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -293,6 +311,7 @@ namespace MediaExplorer
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.contextMenuTree.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -317,6 +336,8 @@ namespace MediaExplorer
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Label lblLoading;
         private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuTree;
+        private System.Windows.Forms.ToolStripMenuItem scanToolStripMenuItem;
     }
 }
 

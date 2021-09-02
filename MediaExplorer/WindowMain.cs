@@ -98,8 +98,6 @@ namespace MediaExplorer
                         
             }
             catch (Exception) { }
-            
-   
         }
         private void LoadInformComplete(string f)
         {
@@ -426,17 +424,24 @@ namespace MediaExplorer
             if (e.KeyCode == Keys.Enter)
                 Path = TextBoxPath.Text;
         }
-
-        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void TreeView1_Click(object sender, EventArgs e)
         {
-            
+            MouseEventArgs me = e as MouseEventArgs;
 
+            if (me.Button == MouseButtons.Right)
+                contextMenuTree.Show(Cursor.Position);
         }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             CreateDirectoryNode(e.Node, e.Node.Tag as DirectoryInfo);
             e.Node.Expand();
+        }
+
+        private void ScanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo di = treeView1.SelectedNode.Tag as DirectoryInfo;
+            Path = di.FullName;
         }
     }
 }
