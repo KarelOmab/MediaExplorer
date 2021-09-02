@@ -17,7 +17,6 @@
 using System;
 using System.Runtime.InteropServices;
 
-#pragma warning disable 1591 // Disable XML documentation warnings
 
 namespace MediaInfoLib
 {
@@ -217,8 +216,8 @@ namespace MediaInfoLib
         }
         public int State_Get() { if (Handle == (IntPtr)0) return 0; return (int)MediaInfo_State_Get(Handle); }
         public int Count_Get(StreamKind StreamKind, int StreamNumber) { if (Handle == (IntPtr)0) return 0; return (int)MediaInfo_Count_Get(Handle, (IntPtr)StreamKind, (IntPtr)StreamNumber); }
-        private IntPtr Handle;
-        private bool MustUseAnsi;
+        private readonly IntPtr Handle;
+        private readonly bool MustUseAnsi;
 
         //Default values, if you know how to set default values in C#, say me
         public String Get(StreamKind StreamKind, int StreamNumber, String Parameter, InfoKind KindOfInfo) { return Get(StreamKind, StreamNumber, Parameter, KindOfInfo, InfoKind.Name); }
@@ -262,7 +261,7 @@ namespace MediaInfoLib
         public String Option(String Option, String Value) { return Marshal.PtrToStringUni(MediaInfoList_Option(Handle, Option, Value)); }
         public int State_Get() { return (int)MediaInfoList_State_Get(Handle); }
         public int Count_Get(int FilePos, StreamKind StreamKind, int StreamNumber) { return (int)MediaInfoList_Count_Get(Handle, (IntPtr)FilePos, (IntPtr)StreamKind, (IntPtr)StreamNumber); }
-        private IntPtr Handle;
+        private readonly IntPtr Handle;
 
         //Default values, if you know how to set default values in C#, say me
         public void Open(String FileName) { Open(FileName, 0); }

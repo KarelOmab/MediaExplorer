@@ -250,6 +250,7 @@ namespace MediaExplorer
             // 
             // listView1
             // 
+            this.listView1.CheckBoxes = true;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
@@ -279,7 +280,7 @@ namespace MediaExplorer
             this.contextMenuTree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scanToolStripMenuItem});
             this.contextMenuTree.Name = "contextMenuTree";
-            this.contextMenuTree.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuTree.Size = new System.Drawing.Size(100, 26);
             // 
             // scanToolStripMenuItem
             // 
@@ -297,6 +298,7 @@ namespace MediaExplorer
             this.Controls.Add(this.menuStrip1);
             this.Name = "WindowMain";
             this.Text = "MediaExplorer";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.WindowMain_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
