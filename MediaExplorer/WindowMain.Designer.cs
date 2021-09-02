@@ -44,8 +44,8 @@ namespace MediaExplorer
             this.TextBoxPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.lblLoading = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.tablePanRoot.SuspendLayout();
             this.tablePanToolbar.SuspendLayout();
@@ -133,7 +133,7 @@ namespace MediaExplorer
             this.ButtonUp.Padding = new System.Windows.Forms.Padding(3);
             this.ButtonUp.Size = new System.Drawing.Size(28, 28);
             this.ButtonUp.TabIndex = 5;
-            this.ButtonUp.Text = "U";
+            this.ButtonUp.Text = "^";
             this.ButtonUp.UseVisualStyleBackColor = true;
             this.ButtonUp.Click += new System.EventHandler(this.ButtonUp_Click);
             // 
@@ -145,7 +145,7 @@ namespace MediaExplorer
             this.ButtonForward.Padding = new System.Windows.Forms.Padding(3);
             this.ButtonForward.Size = new System.Drawing.Size(28, 28);
             this.ButtonForward.TabIndex = 4;
-            this.ButtonForward.Text = "F";
+            this.ButtonForward.Text = ">";
             this.ButtonForward.UseVisualStyleBackColor = true;
             this.ButtonForward.Click += new System.EventHandler(this.ButtonForward_Click);
             // 
@@ -157,7 +157,7 @@ namespace MediaExplorer
             this.ButtonBack.Padding = new System.Windows.Forms.Padding(3);
             this.ButtonBack.Size = new System.Drawing.Size(28, 28);
             this.ButtonBack.TabIndex = 3;
-            this.ButtonBack.Text = "B";
+            this.ButtonBack.Text = "<";
             this.ButtonBack.UseVisualStyleBackColor = true;
             this.ButtonBack.Click += new System.EventHandler(this.ButtonBack_Click);
             // 
@@ -214,7 +214,7 @@ namespace MediaExplorer
             this.TextBoxPath.Name = "TextBoxPath";
             this.TextBoxPath.Size = new System.Drawing.Size(526, 20);
             this.TextBoxPath.TabIndex = 15;
-            this.TextBoxPath.Text = "D:\\Disk1\\Example";
+            this.TextBoxPath.TextChanged += new System.EventHandler(this.TextBoxPath_TextChanged);
             this.TextBoxPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxPath_KeyDown);
             // 
             // splitContainer1
@@ -230,6 +230,7 @@ namespace MediaExplorer
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listView1);
+            this.splitContainer1.Panel2.Controls.Add(this.lblLoading);
             this.splitContainer1.Size = new System.Drawing.Size(1044, 590);
             this.splitContainer1.SplitterDistance = 211;
             this.splitContainer1.TabIndex = 1;
@@ -242,23 +243,31 @@ namespace MediaExplorer
             this.treeView1.Size = new System.Drawing.Size(211, 590);
             this.treeView1.TabIndex = 1;
             // 
+            // lblLoading
+            // 
+            this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblLoading.AutoSize = true;
+            this.lblLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoading.Location = new System.Drawing.Point(366, 295);
+            this.lblLoading.Name = "lblLoading";
+            this.lblLoading.Size = new System.Drawing.Size(93, 24);
+            this.lblLoading.TabIndex = 0;
+            this.lblLoading.Text = "Loading...";
+            this.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // listView1
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(829, 590);
-            this.listView1.TabIndex = 0;
+            this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
             // 
             // WindowMain
             // 
@@ -280,6 +289,7 @@ namespace MediaExplorer
             this.tableLayoutPanel2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -303,9 +313,9 @@ namespace MediaExplorer
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TextBox TextBoxPath;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Label lblLoading;
+        private System.Windows.Forms.ListView listView1;
     }
 }
 

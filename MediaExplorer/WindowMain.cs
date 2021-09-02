@@ -19,11 +19,27 @@ namespace MediaExplorer
         public string Path
         {
             get { return _path; }
-            set { _path = value; }
+            set { 
+                _path = value;
+                TextBoxPath.Text = value;
+                LoadMediaData();
+            }
         }
 
         MediaInfo MI = new MediaInfo();
         List<MediaFile> lMediaFiles = new List<MediaFile>();
+        List<DirectoryInfo> lDirHistory = new List<DirectoryInfo>();
+
+        private int _iDirHistoryIndex = 0;
+        public int DirHistoryIndex
+        {
+            get { return _iDirHistoryIndex; }
+            set
+            {
+                _iDirHistoryIndex = value;
+                Path = lDirHistory[_iDirHistoryIndex].FullName;
+            }
+        }
         
 
 
@@ -36,76 +52,22 @@ namespace MediaExplorer
         private void WindowMain_Load(object sender, EventArgs e)
         {
 
+            
             string v = MI.Option("Info_Version", "0.7.0.0;MediaInfoDLL_Example_CS;0.7.0.0");
             if (v.Length == 0)
             {
                 MessageBox.Show("MediaInfo.Dll: this version of the DLL is not compatible");
                 return;
             }
-            //LoadParams();
-            //LoadColumns();
-            //LoadMediaData();
+
+            System.Reflection.PropertyInfo aProp = typeof(ListView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            aProp.SetValue(listView1, true, null);
+
+            ActiveControl = null;
+
+            TextBoxPath.Text = @"D:\Disk1\Example\child";
         }
 
-        //private void LoadParams(string f)
-        //{
-        //    StreamKind sk = StreamKind.General;
-        //    int i = 0;
-
-        //    foreach (string line in MI.Option("Info_Parameters").Split('\n'))
-        //    {
-        //        if (line.Contains(":"))
-        //        {
-        //            string[] kv = line.Split(':');
-        //            string k = kv[0].Trim();
-        //            string d = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
-
-        //            //Inform is a special keyword that returns new dictionary (duplicate) so we dont want to include it
-        //            if (k != "Inform")
-        //                lParams.Add(new Parameter(i, k, d, sk));
-
-        //        } else
-        //        {
-        //            switch (line.Trim())
-        //            {
-        //                case "Audio":
-        //                    sk = StreamKind.Audio;
-        //                    break;
-        //                case "General":
-        //                    sk = StreamKind.General;
-        //                    break;
-        //                case "Image":
-        //                    sk = StreamKind.Image;
-        //                    break;
-        //                case "Menu":
-        //                    sk = StreamKind.Menu;
-        //                    break;
-        //                case "Other":
-        //                    sk = StreamKind.Other;
-        //                    break;
-        //                case "Text":
-        //                    sk = StreamKind.Text;
-        //                    break;
-        //                case "Video":
-        //                    sk = StreamKind.Video;
-        //                    break;
-        //                default:
-        //                    if (line.Trim().Length > 0)
-        //                    {
-        //                        lParams.Add(new Parameter(i, line, string.Empty, sk));
-        //                    }
-        //                    break;
-        //            }
-        //        }
-        //        i++;
-        //    }
-        //}
-        //private void LoadColumns()
-        //{
-        //    listView1.Columns.Add(new ColumnHeader() { Text = "Name"});
-        //    foreach (Parameter p in lParams)
-        //        listView1.Columns.Add(new ColumnHeader() { Text = p.Key, Name = p.Index.ToString(), Width = 0 });
-        //}
         private void LoadInformComplete(string f)
         {
             StreamKind sk = StreamKind.General;
@@ -180,30 +142,49 @@ namespace MediaExplorer
         }
         private void LoadMediaData()
         {
-            var watch = new System.Diagnostics.Stopwatch();
+            UpdateUI(true);
 
+            var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            Path = TextBoxPath.Text;
-
-            listView1.Items.Clear();
+            //load listview columns
+            InitListviewColumns();
 
             //process files in directory
             if (Directory.Exists(Path))
+            {
+                DirectoryInfo di = new DirectoryInfo(Path);
+                bool isMatched = false;
+                for (int i = 0; i < lDirHistory.Count; i++)
+                {
+                    DirectoryInfo die = lDirHistory[i];
+                    if (di.FullName == die.FullName)
+                    {
+                        isMatched = true;
+                        break;
+                    }
+                }
+
+                if (!isMatched)
+                    lDirHistory.Add(di);
+
                 foreach (string f in Directory.GetFiles(Path))
                     HandleFile(f);
+            }
+
 
             //process listview items
             foreach (MediaFile mf in lMediaFiles)
             {
                 ListViewItem lvi = new ListViewItem();
                 lvi.UseItemStyleForSubItems = false;
-                lvi.Text = mf.Name;
+                lvi.Text = System.IO.Path.GetFileName(mf.Name);
 
                 foreach (Parameter p in mf.lParams)
                 {
-                    
-                    Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
+#if DEBUG
+                    //Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
+#endif
 
                     ColumnHeader ch = new ColumnHeader();
                     ch.Text = p.Key;
@@ -238,11 +219,35 @@ namespace MediaExplorer
                 listView1.Items.Add(lvi);
             }
 
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            UpdateUI(false);
 
             watch.Stop();
 
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+        }
+
+        private void UpdateUI(bool isLoading)
+        {
+            if (isLoading)
+            {
+                TextBoxPath.Refresh();
+                TextBoxPath.Enabled = false;
+                listView1.Visible = false;
+                splitContainer1.Panel2.Refresh();
+            } else
+            {
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                listView1.Visible = true;
+                TextBoxPath.Enabled = true;
+            } 
+        }
+
+        private void InitListviewColumns()
+        {
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
+            lMediaFiles.Clear();
+            listView1.Columns.Add("Name");  //not part of mediainfolib
         }
 
         private void HandleFile(string f)
@@ -375,17 +380,22 @@ namespace MediaExplorer
 
         private void ButtonBack_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("TODO");
+            int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
+            if (ci > 0)
+                DirHistoryIndex = ci - 1;
         }
 
         private void ButtonForward_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("TODO");
+            int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
+            if (ci < lDirHistory.Count - 1)
+                DirHistoryIndex = ci + 1;
         }
 
         private void ButtonUp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("TODO");
+            DirectoryInfo dInfo = new DirectoryInfo(Path);
+            if (dInfo.Parent != null) Path = dInfo.Parent.FullName;
         }
 
         private void ButtonRefresh_Click(object sender, EventArgs e)
@@ -399,6 +409,11 @@ namespace MediaExplorer
             {
                 MessageBox.Show("TODO");
             }
+        }
+
+        private void TextBoxPath_TextChanged(object sender, EventArgs e)
+        {
+            Path = TextBoxPath.Text;
         }
     }
 }
