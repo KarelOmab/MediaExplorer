@@ -66,8 +66,6 @@ namespace MediaExplorer
 
             foreach(DriveInfo di in DriveInfo.GetDrives())
                 CreateDirectoryNode(null, di.RootDirectory);
-
-
         }
         private void CreateDirectoryNode(TreeNode node, DirectoryInfo di)
         {

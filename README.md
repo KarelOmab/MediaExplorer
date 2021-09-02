@@ -19,7 +19,9 @@ September 2, 2021
 - [x] Basic treeview control to navigate directories
 - [x] Basic listview control to present data
 - [ ] Listview data filters
+- [ ] Listview column sort
 - [ ] Export data to file
 - [ ] Loading animation
 - [ ] Ability to choose the type of MediaInfo query
 - [ ] Icons for application, treeview nodes and menu buttons
+- [ ] Ability to execute file operations with checked items
