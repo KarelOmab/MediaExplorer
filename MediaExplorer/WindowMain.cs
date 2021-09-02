@@ -57,6 +57,8 @@ namespace MediaExplorer
             System.Reflection.PropertyInfo aProp = typeof(ListView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             aProp.SetValue(listView1, true, null);
 
+            Text += " - " + Application.ProductVersion;
+
             //Path = @"D:\Disk1\Example";
             LoadTreeview();
         }
