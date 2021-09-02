@@ -63,9 +63,44 @@ namespace MediaExplorer
 
             ActiveControl = null;
 
-            Path = @"D:\Disk1\Example\child";
+            Path = @"D:\Disk1\Example";
+            LoadTreeview();
         }
+        private void LoadTreeview()
+        {
+            CreateDirectoryNode(null, new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));    //list all common folders
 
+            foreach(DriveInfo di in DriveInfo.GetDrives())
+                CreateDirectoryNode(null, di.RootDirectory);
+
+
+        }
+        private void CreateDirectoryNode(TreeNode node, DirectoryInfo di)
+        {
+            TreeNode directoryNode;
+
+            if (node == null)
+            {
+                directoryNode = new TreeNode() { Text = di.Name, Tag = di };
+                treeView1.Nodes.Add(directoryNode);
+            } else directoryNode = node;
+
+            directoryNode.Nodes.Clear();
+
+            try
+            {
+                foreach (DirectoryInfo d in di.GetDirectories())
+                    if ((d.Attributes & FileAttributes.Hidden) == 0)
+                    {
+                        directoryNode.Nodes.Add(new TreeNode() { Text = d.Name, Tag = d });
+                        directoryNode.Expand();
+                    }
+                        
+            }
+            catch (Exception) { }
+            
+   
+        }
         private void LoadInformComplete(string f)
         {
             StreamKind sk = StreamKind.General;
@@ -164,7 +199,7 @@ namespace MediaExplorer
                     lDirHistory.Add(di);
 
                 foreach (string f in Directory.GetFiles(Path))
-                    HandleFile(f);
+                    LoadInformComplete(f);
             }
 
 
@@ -178,7 +213,7 @@ namespace MediaExplorer
                 foreach (Parameter p in mf.lParams)
                 {
 #if DEBUG
-                    //Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
+                    Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
 #endif
 
                     ColumnHeader ch = new ColumnHeader();
@@ -220,7 +255,6 @@ namespace MediaExplorer
 
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
-
         private void UpdateUI(bool isLoading)
         {
             if (isLoading)
@@ -241,12 +275,6 @@ namespace MediaExplorer
                 TextBoxPath.Enabled = true;
             } 
         }
-
-        private void HandleFile(string f)
-        {
-            LoadInformComplete(f);
-        }
-
         private Color GetBackgroundColor(StreamKind sk)
         {
             if (sk == StreamKind.Audio)
@@ -266,8 +294,6 @@ namespace MediaExplorer
 
             return Color.White;
         }
-
-
         private void ExampleQuery(string f)
         {
             //Test if version of DLL is compatible : 3rd argument is "version of DLL tested;Your application name;Your application version"
@@ -401,9 +427,16 @@ namespace MediaExplorer
                 Path = TextBoxPath.Text;
         }
 
-        private void TextBoxPath_TextChanged(object sender, EventArgs e)
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             
+
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            CreateDirectoryNode(e.Node, e.Node.Tag as DirectoryInfo);
+            e.Node.Expand();
         }
     }
 }
