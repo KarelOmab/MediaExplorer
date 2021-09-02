@@ -18,8 +18,9 @@ September 2, 2021
 - [x] Basic toolbar menu to help navigate back, forth, refresh or type folder path
 - [x] Basic treeview control to navigate directories
 - [x] Basic listview control to present data
-- [ ] Listview data filters
-- [ ] Listview column sort
+- [ ] Big data rendering issues
+- [ ] Data filters
+- [ ] Column sort
 - [ ] Export data to file
 - [ ] Loading animation
 - [ ] Ability to choose the type of MediaInfo query
