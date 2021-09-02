@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MediaFile.cs" />
     <Compile Include="MediaInfoDLL.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="WindowMain.cs">

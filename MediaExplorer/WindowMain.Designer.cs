@@ -43,8 +43,9 @@ namespace MediaExplorer
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.TextBoxPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.tablePanRoot.SuspendLayout();
             this.tablePanToolbar.SuspendLayout();
@@ -233,11 +234,20 @@ namespace MediaExplorer
             this.splitContainer1.SplitterDistance = 211;
             this.splitContainer1.TabIndex = 1;
             // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(211, 590);
+            this.treeView1.TabIndex = 1;
+            // 
             // listView1
             // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
@@ -246,13 +256,9 @@ namespace MediaExplorer
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
-            // treeView1
+            // columnHeader1
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(211, 590);
-            this.treeView1.TabIndex = 1;
+            this.columnHeader1.Text = "Name";
             // 
             // WindowMain
             // 
@@ -299,6 +305,7 @@ namespace MediaExplorer
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 
