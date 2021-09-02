@@ -44,8 +44,8 @@ namespace MediaExplorer
             this.TextBoxPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.lblLoading = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.lblLoading = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tablePanRoot.SuspendLayout();
             this.tablePanToolbar.SuspendLayout();
@@ -214,7 +214,6 @@ namespace MediaExplorer
             this.TextBoxPath.Name = "TextBoxPath";
             this.TextBoxPath.Size = new System.Drawing.Size(526, 20);
             this.TextBoxPath.TabIndex = 15;
-            this.TextBoxPath.TextChanged += new System.EventHandler(this.TextBoxPath_TextChanged);
             this.TextBoxPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxPath_KeyDown);
             // 
             // splitContainer1
@@ -243,6 +242,18 @@ namespace MediaExplorer
             this.treeView1.Size = new System.Drawing.Size(211, 590);
             this.treeView1.TabIndex = 1;
             // 
+            // listView1
+            // 
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.FullRowSelect = true;
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(0, 0);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(829, 590);
+            this.listView1.TabIndex = 2;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
             // lblLoading
             // 
             this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -256,18 +267,6 @@ namespace MediaExplorer
             this.lblLoading.TabIndex = 0;
             this.lblLoading.Text = "Loading...";
             this.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // listView1
-            // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.FullRowSelect = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(829, 590);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
             // 
             // WindowMain
             // 

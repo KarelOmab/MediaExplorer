@@ -65,7 +65,7 @@ namespace MediaExplorer
 
             ActiveControl = null;
 
-            TextBoxPath.Text = @"D:\Disk1\Example\child";
+            Path = @"D:\Disk1\Example\child";
         }
 
         private void LoadInformComplete(string f)
@@ -406,14 +406,12 @@ namespace MediaExplorer
         private void TextBoxPath_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
-                MessageBox.Show("TODO");
-            }
+                Path = TextBoxPath.Text;
         }
 
         private void TextBoxPath_TextChanged(object sender, EventArgs e)
         {
-            Path = TextBoxPath.Text;
+            
         }
     }
 }
