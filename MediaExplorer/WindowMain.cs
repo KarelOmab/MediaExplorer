@@ -51,8 +51,6 @@ namespace MediaExplorer
 
         private void WindowMain_Load(object sender, EventArgs e)
         {
-
-            
             string v = MI.Option("Info_Version", "0.7.0.0;MediaInfoDLL_Example_CS;0.7.0.0");
             if (v.Length == 0)
             {
@@ -142,13 +140,10 @@ namespace MediaExplorer
         }
         private void LoadMediaData()
         {
-            UpdateUI(true);
-
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            //load listview columns
-            InitListviewColumns();
+            UpdateUI(true);
 
             //process files in directory
             if (Directory.Exists(Path))
@@ -230,6 +225,11 @@ namespace MediaExplorer
         {
             if (isLoading)
             {
+                listView1.Items.Clear();
+                listView1.Columns.Clear();
+                lMediaFiles.Clear();
+                listView1.Columns.Add("Name");  //not part of mediainfolib
+
                 TextBoxPath.Refresh();
                 TextBoxPath.Enabled = false;
                 listView1.Visible = false;
@@ -240,14 +240,6 @@ namespace MediaExplorer
                 listView1.Visible = true;
                 TextBoxPath.Enabled = true;
             } 
-        }
-
-        private void InitListviewColumns()
-        {
-            listView1.Items.Clear();
-            listView1.Columns.Clear();
-            lMediaFiles.Clear();
-            listView1.Columns.Add("Name");  //not part of mediainfolib
         }
 
         private void HandleFile(string f)
