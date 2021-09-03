@@ -70,7 +70,7 @@ namespace MediaExplorer
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1050, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1092, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,7 +99,7 @@ namespace MediaExplorer
             this.tablePanRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tablePanRoot.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tablePanRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tablePanRoot.Size = new System.Drawing.Size(1050, 636);
+            this.tablePanRoot.Size = new System.Drawing.Size(1092, 662);
             this.tablePanRoot.TabIndex = 1;
             // 
             // tablePanToolbar
@@ -116,7 +116,7 @@ namespace MediaExplorer
             this.tablePanToolbar.Name = "tablePanToolbar";
             this.tablePanToolbar.RowCount = 1;
             this.tablePanToolbar.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tablePanToolbar.Size = new System.Drawing.Size(1044, 34);
+            this.tablePanToolbar.Size = new System.Drawing.Size(1086, 34);
             this.tablePanToolbar.TabIndex = 0;
             // 
             // panel1
@@ -179,13 +179,13 @@ namespace MediaExplorer
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(560, 34);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(585, 34);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // ButtonRefresh
             // 
             this.ButtonRefresh.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ButtonRefresh.Location = new System.Drawing.Point(529, 3);
+            this.ButtonRefresh.Location = new System.Drawing.Point(554, 3);
             this.ButtonRefresh.Name = "ButtonRefresh";
             this.ButtonRefresh.Padding = new System.Windows.Forms.Padding(3);
             this.ButtonRefresh.Size = new System.Drawing.Size(28, 28);
@@ -208,7 +208,7 @@ namespace MediaExplorer
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(526, 34);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(551, 34);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // TextBoxPath
@@ -217,7 +217,7 @@ namespace MediaExplorer
             this.TextBoxPath.Location = new System.Drawing.Point(0, 7);
             this.TextBoxPath.Margin = new System.Windows.Forms.Padding(0);
             this.TextBoxPath.Name = "TextBoxPath";
-            this.TextBoxPath.Size = new System.Drawing.Size(526, 20);
+            this.TextBoxPath.Size = new System.Drawing.Size(551, 20);
             this.TextBoxPath.TabIndex = 15;
             this.TextBoxPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxPath_KeyDown);
             // 
@@ -235,8 +235,8 @@ namespace MediaExplorer
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
             this.splitContainer1.Panel2.Controls.Add(this.lblLoading);
-            this.splitContainer1.Size = new System.Drawing.Size(1044, 590);
-            this.splitContainer1.SplitterDistance = 211;
+            this.splitContainer1.Size = new System.Drawing.Size(1086, 616);
+            this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 1;
             // 
             // treeView1
@@ -244,21 +244,18 @@ namespace MediaExplorer
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(211, 590);
+            this.treeView1.Size = new System.Drawing.Size(212, 616);
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             this.treeView1.Click += new System.EventHandler(this.TreeView1_Click);
             // 
             // lblLoading
             // 
-            this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblLoading.AutoSize = true;
+            this.lblLoading.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoading.Location = new System.Drawing.Point(366, 295);
+            this.lblLoading.Location = new System.Drawing.Point(0, 0);
             this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(93, 24);
+            this.lblLoading.Size = new System.Drawing.Size(870, 616);
             this.lblLoading.TabIndex = 0;
             this.lblLoading.Text = "Loading...";
             this.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -283,14 +280,14 @@ namespace MediaExplorer
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(829, 590);
-            this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.Size = new System.Drawing.Size(870, 616);
+            this.dataGridView1.TabIndex = 6;
             // 
             // WindowDg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1050, 660);
+            this.ClientSize = new System.Drawing.Size(1092, 686);
             this.Controls.Add(this.tablePanRoot);
             this.Controls.Add(this.menuStrip1);
             this.Name = "WindowDg";
@@ -307,7 +304,6 @@ namespace MediaExplorer
             this.tableLayoutPanel2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuTree.ResumeLayout(false);

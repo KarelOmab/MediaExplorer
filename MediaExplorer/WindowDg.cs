@@ -40,6 +40,8 @@ namespace MediaExplorer
         private readonly List<MediaFile> lMediaFiles = new List<MediaFile>();
         private readonly List<DirectoryInfo> lDirHistory = new List<DirectoryInfo>();
 
+        private Dictionary<string, string> DictKeysDef = new Dictionary<string, string>();
+
         public WindowDg()
         {
             InitializeComponent();
@@ -59,7 +61,7 @@ namespace MediaExplorer
             System.Reflection.PropertyInfo aProp = typeof(DataGridView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             aProp.SetValue(dataGridView1, true, null);
 
-            Path = @"D:\Disk1\Example\child";
+            //Path = @"D:\Disk1\Example";
             LoadTreeview();
             //Test();
         }
@@ -133,13 +135,12 @@ namespace MediaExplorer
         private void LoadInformComplete(string f)
         {
             StreamKind sk = StreamKind.General;
-            int i = 0;
             if (File.Exists(f))
             {
                 try
                 {
                     MediaFile mf = new MediaFile(f);
-                    mf.Type = "";
+                    List<string> lKeys = new List<string>();
                     MI.Open(f);
 
                     MI.Option("Complete", "1");
@@ -152,8 +153,24 @@ namespace MediaExplorer
                             string k = kv[0].Trim();
                             string v = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
 
-                            mf.lParams.Add(new Parameter(i, k, string.Empty, v, sk));
-                            i++;
+                            string modkey = string.Format("{0}_{1}{2}", sk.ToString(), k, lKeys.FindAll(x => x == k).Count.ToString());
+
+                            bool isMatch = false;
+                            foreach (KeyValuePair<string, string> keyval in DictKeysDef)
+                            {
+                                if (keyval.Key == modkey)
+                                {
+                                    isMatch = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isMatch)
+                                DictKeysDef.Add(modkey, k);
+
+                            lKeys.Add(k);
+
+                            mf.lParams.Add(new Parameter(0, modkey, string.Empty, v, sk));
 
                         }
                         else
@@ -184,7 +201,7 @@ namespace MediaExplorer
                                 default:
                                     if (line.Trim().Length > 0)
                                     {
-                                        mf.lParams.Add(new Parameter(i, line, string.Empty, string.Empty, sk));
+                                        mf.lParams.Add(new Parameter(0, line, string.Empty, string.Empty, sk));
                                     }
                                     break;
                             }
@@ -200,6 +217,8 @@ namespace MediaExplorer
                 {
                     Console.WriteLine(ex.Message);
                 }
+
+                
             }
         }
         private void LoadMediaData()
@@ -207,7 +226,7 @@ namespace MediaExplorer
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            dataGridView1.DataSource = null;
+            UpdateUI(true);
 
             //process files in directory
             if (Directory.Exists(Path))
@@ -227,36 +246,59 @@ namespace MediaExplorer
                 if (!isMatched)
                     lDirHistory.Add(di);
 
+                //get all unique columns and media files
                 foreach (string f in Directory.GetFiles(Path))
                     LoadInformComplete(f);
+
+                //add all unique columns
+                foreach (KeyValuePair<string, string> keyval in DictKeysDef)
+                    dataGridView1.Columns.Add(keyval.Key, keyval.Value);
             }
 
-
-            //process items
+            //process media files
             foreach (MediaFile mf in lMediaFiles)
             {
+                //Create the new row first and get the index of the new row
+                int rowIndex = this.dataGridView1.Rows.Add();
 
-                List<object> ob = new List<object>();
+                //Obtain a reference to the newly created DataGridViewRow 
+                var row = this.dataGridView1.Rows[rowIndex];
+
                 foreach (Parameter p in mf.lParams)
                 {
 #if DEBUG
                     Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
 #endif
-
-                    dataGridView1.Columns.Add(p.Key, p.Key);
-                    ob.Add(p.Value);
-
-
-                }
-                dataGridView1.Rows.Add(ob.ToArray());
+                    row.Cells[p.Key].Value = p.Value;
+                } 
             }
-            dataGridView1.AutoResizeColumns();
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+            UpdateUI(false);
+
             watch.Stop();
 
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
-       
+
+        private void UpdateUI(bool isLoading)
+        {
+            if (isLoading)
+            {
+                dataGridView1.Columns.Clear();
+                dataGridView1.Rows.Clear();
+                dataGridView1.Visible = false;
+                TextBoxPath.Refresh();
+                TextBoxPath.Enabled = false;
+                splitContainer1.Panel2.Refresh();
+            }
+            else
+            {
+                dataGridView1.AutoResizeColumns();
+                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dataGridView1.Visible = true;
+            }
+        }
+
         private Color GetBackgroundColor(StreamKind sk)
         {
             if (sk == StreamKind.Audio)
