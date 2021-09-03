@@ -229,6 +229,15 @@ namespace MediaExplorer
             if (Directory.Exists(Path))
             {
                 lMediaFiles.Clear();
+
+                if (View == ViewMode.DATAGRID)
+                    dataGridView1.Visible = false;
+                else if (View == ViewMode.LISTVIEW)
+                    listView1.Visible = false;
+
+                splitContainer1.Panel2.Refresh();
+
+
                 DirectoryInfo di = new DirectoryInfo(Path);
                 bool isMatched = false;
                 for (int i = 0; i < lDirHistory.Count; i++)
@@ -259,10 +268,36 @@ namespace MediaExplorer
 
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
+        private void LoadColumns()
+        {
+            if (View == ViewMode.DATAGRID)
+            {
+                dataGridView1.Columns.Clear();
+                dataGridView1.Rows.Clear();
+
+                TextBoxPath.Refresh();
+                splitContainer1.Panel2.Refresh();
+
+                foreach (KeyValuePair<string, string> keyval in DictKeysDef)
+                    dataGridView1.Columns.Add(keyval.Key, keyval.Value);
+            }
+            else if (View == ViewMode.LISTVIEW)
+            {
+                listView1.Items.Clear();
+                listView1.Columns.Clear();
+
+                TextBoxPath.Refresh();
+                splitContainer1.Panel2.Refresh();
+
+                foreach (KeyValuePair<string, string> keyval in DictKeysDef)
+                    listView1.Columns.Add(new ColumnHeader() { Text = keyval.Value, Name = keyval.Key });
+            }
+        }
 
         private void LoadRows()
         {
             if (View == ViewMode.DATAGRID)
+            {
                 foreach (MediaFile mf in lMediaFiles)
                 {
                     //Create the new row first and get the index of the new row
@@ -277,7 +312,13 @@ namespace MediaExplorer
                         row.Cells[p.Key].Value = p.Value;
                     }
                 }
-            else if (View == ViewMode.LISTVIEW)
+
+                dataGridView1.AutoResizeColumns();
+                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dataGridView1.Visible = true;
+                dataGridView1.BringToFront();
+            }  else if (View == ViewMode.LISTVIEW)
+            {
                 foreach (MediaFile mf in lMediaFiles)
                 {
                     ListViewItem lvi = new ListViewItem();
@@ -285,50 +326,27 @@ namespace MediaExplorer
                     foreach (Parameter p in mf.lParams)
                     {
                         Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
-                        lvi.SubItems.Add(p.Value);
+
+                        Console.WriteLine(listView1.Columns.Count);
+
+                        int ci = listView1.Columns.IndexOfKey(p.Key);
+
+                        while (lvi.SubItems.Count <= ci)
+                            lvi.SubItems.Add("");
+
+                        lvi.SubItems[ci].Text = p.Value;
                     }
 
                     listView1.Items.Add(lvi);
                 }
-        }
-
-        private void LoadColumns()
-        {
-            if (View == ViewMode.DATAGRID)
-            {
-                dataGridView1.Columns.Clear();
-                dataGridView1.Rows.Clear();
-                dataGridView1.Visible = false;
-
-                TextBoxPath.Refresh();
-                splitContainer1.Panel2.Refresh();
-
-                foreach (KeyValuePair<string, string> keyval in DictKeysDef)
-                    dataGridView1.Columns.Add(keyval.Key, keyval.Value);
-
-                dataGridView1.AutoResizeColumns();
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                dataGridView1.Visible = true;
-                dataGridView1.BringToFront();
-            }
-            else if (View == ViewMode.LISTVIEW)
-            {
-                listView1.Items.Clear();
-                listView1.Columns.Clear();
-                listView1.Visible = false;
-                listView1.Columns.Add("Name");  //not part of mediainfolib
-
-                TextBoxPath.Refresh();
-                splitContainer1.Panel2.Refresh();
-
-                foreach (KeyValuePair<string, string> keyval in DictKeysDef)
-                    listView1.Columns.Add(new ColumnHeader() { Text = keyval.Value, Name = keyval.Value });
-
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 listView1.Visible = true;
                 listView1.BringToFront();
             }
+                
         }
+
+        
         private Color GetBackgroundColor(StreamKind sk)
         {
             if (sk == StreamKind.Audio)
