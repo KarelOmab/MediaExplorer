@@ -16,8 +16,8 @@ namespace MediaExplorer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new WindowMain());
-            Application.Run(new WindowDg());
+            Application.Run(new WindowMain());
+            //Application.Run(new WindowDg());
         }
     }
 }

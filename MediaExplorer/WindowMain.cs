@@ -15,6 +15,55 @@ namespace MediaExplorer
 {
     public partial class WindowMain : Form
     {
+        public enum ViewMode
+        {
+            DATAGRID,
+            LISTVIEW
+        }
+
+        private ViewMode _view;
+        public ViewMode View
+        {
+            get { return _view; }
+            set 
+            {
+                _view = value;
+
+                if (value == ViewMode.DATAGRID)
+                {
+                    
+                    if (splitContainer1.Panel2.Controls.Contains(listView1))
+                    {
+                        splitContainer1.Panel2.Controls.Remove(listView1);
+                        LoadMediaData();
+                    }
+                        
+
+                    splitContainer1.Panel2.Controls.Add(dataGridView1);
+                    dataGridView1.BringToFront();
+
+                    ToolStripMenuItemDGW.Checked = true;
+                    ToolStripMenuItemLW.Checked = false;
+
+
+                } else if (value == ViewMode.LISTVIEW)
+                {
+                    if (splitContainer1.Panel2.Controls.Contains(dataGridView1))
+                    {
+                        splitContainer1.Panel2.Controls.Remove(dataGridView1);
+                        LoadMediaData();
+                    }
+                        
+
+                    splitContainer1.Panel2.Controls.Add(listView1);
+                    listView1.BringToFront();
+
+                    ToolStripMenuItemDGW.Checked = false;
+                    ToolStripMenuItemLW.Checked = true;
+                }
+            }
+        }
+
         private string _path;
         public string Path
         {
@@ -36,13 +85,32 @@ namespace MediaExplorer
             }
         }
 
+
+
         private readonly MediaInfo MI = new MediaInfo();
         private readonly List<MediaFile> lMediaFiles = new List<MediaFile>();
         private readonly List<DirectoryInfo> lDirHistory = new List<DirectoryInfo>();
+        private Dictionary<string, string> DictKeysDef = new Dictionary<string, string>();
+
+        private ListView listView1;
+        private DataGridView dataGridView1;
 
         public WindowMain()
         {
             InitializeComponent();
+
+            listView1 = new ListView();
+            listView1.View = System.Windows.Forms.View.Details;
+            listView1.Dock = DockStyle.Fill;
+            System.Reflection.PropertyInfo p = typeof(ListView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            p.SetValue(listView1, true, null);
+
+            dataGridView1 = new DataGridView();
+            dataGridView1.Dock = DockStyle.Fill;
+            p = typeof(DataGridView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            p.SetValue(dataGridView1, true, null);
+
+            View = ViewMode.DATAGRID;
         }
 
         private void WindowMain_Load(object sender, EventArgs e)
@@ -59,50 +127,19 @@ namespace MediaExplorer
 
             Text += " - " + Application.ProductVersion;
 
-            //Path = @"D:\Disk1\Example";
+            Path = @"D:\Disk1\Example\child";
             LoadTreeview();
         }
-        private void LoadTreeview()
-        {
-            CreateDirectoryNode(null, new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));    //list all common folders
 
-            foreach(DriveInfo di in DriveInfo.GetDrives())
-                CreateDirectoryNode(null, di.RootDirectory);
-        }
-        private void CreateDirectoryNode(TreeNode node, DirectoryInfo di)
-        {
-            TreeNode directoryNode;
-
-            if (node == null)
-            {
-                directoryNode = new TreeNode() { Text = di.Name, Tag = di };
-                treeView1.Nodes.Add(directoryNode);
-            } else directoryNode = node;
-
-            directoryNode.Nodes.Clear();
-
-            try
-            {
-                foreach (DirectoryInfo d in di.GetDirectories())
-                    if ((d.Attributes & FileAttributes.Hidden) == 0)
-                    {
-                        directoryNode.Nodes.Add(new TreeNode() { Text = d.Name, Tag = d });
-                        directoryNode.Expand();
-                    }
-                        
-            }
-            catch (Exception) { }
-        }
         private void LoadInformComplete(string f)
         {
             StreamKind sk = StreamKind.General;
-            int i = 0;
             if (File.Exists(f))
             {
                 try
                 {
                     MediaFile mf = new MediaFile(f);
-                    
+                    List<string> lKeys = new List<string>();
                     MI.Open(f);
 
                     MI.Option("Complete", "1");
@@ -115,8 +152,24 @@ namespace MediaExplorer
                             string k = kv[0].Trim();
                             string v = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
 
-                            mf.lParams.Add(new Parameter(i, k, string.Empty, v, sk));
-                            i++;
+                            string modkey = string.Format("{0}_{1}{2}", sk.ToString(), k, lKeys.FindAll(x => x == k).Count.ToString());
+
+                            bool isMatch = false;
+                            foreach (KeyValuePair<string, string> keyval in DictKeysDef)
+                            {
+                                if (keyval.Key == modkey)
+                                {
+                                    isMatch = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isMatch)
+                                DictKeysDef.Add(modkey, k);
+
+                            lKeys.Add(k);
+
+                            mf.lParams.Add(new Parameter(0, modkey, string.Empty, v, sk));
 
                         }
                         else
@@ -147,12 +200,12 @@ namespace MediaExplorer
                                 default:
                                     if (line.Trim().Length > 0)
                                     {
-                                        mf.lParams.Add(new Parameter(i, line, string.Empty, string.Empty, sk));
+                                        mf.lParams.Add(new Parameter(0, line, string.Empty, string.Empty, sk));
                                     }
                                     break;
                             }
                         }
-                        
+
                     }
                     MI.Close();
 
@@ -172,9 +225,12 @@ namespace MediaExplorer
 
             UpdateUI(true);
 
+            
+
             //process files in directory
             if (Directory.Exists(Path))
             {
+                lMediaFiles.Clear();
                 DirectoryInfo di = new DirectoryInfo(Path);
                 bool isMatched = false;
                 for (int i = 0; i < lDirHistory.Count; i++)
@@ -190,51 +246,52 @@ namespace MediaExplorer
                 if (!isMatched)
                     lDirHistory.Add(di);
 
+                //get all unique columns and media files
                 foreach (string f in Directory.GetFiles(Path))
                     LoadInformComplete(f);
+
+                
+
+                //add all unique columns
+                foreach (KeyValuePair<string, string> keyval in DictKeysDef)
+                {
+                    if (View == ViewMode.DATAGRID)
+                        dataGridView1.Columns.Add(keyval.Key, keyval.Value);
+                    else if (View == ViewMode.LISTVIEW)
+                        listView1.Columns.Add(new ColumnHeader() { Text = keyval.Value, Name = keyval.Value});
+                }
+                    
             }
 
-
-            //process listview items
-            foreach (MediaFile mf in lMediaFiles)
-            {
-                ListViewItem lvi = new ListViewItem() { Text = System.IO.Path.GetFileName(mf.Name) , UseItemStyleForSubItems = false};
-
-                foreach (Parameter p in mf.lParams)
+            //process media files
+            if (View == ViewMode.DATAGRID)
+                foreach (MediaFile mf in lMediaFiles)
                 {
-#if DEBUG
-                    Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
-#endif
+                    //Create the new row first and get the index of the new row
+                    int rowIndex = this.dataGridView1.Rows.Add();
 
-                    ColumnHeader ch = new ColumnHeader() { Text = p.Key , Name = p.Key , Tag = p };
-                    int ci = 0;
+                    //Obtain a reference to the newly created DataGridViewRow 
+                    var row = this.dataGridView1.Rows[rowIndex];
 
-                    bool isMatch = false;
-                    for (int i = 0; i < listView1.Columns.Count; i++)
+                    foreach (Parameter p in mf.lParams)
                     {
-                        ColumnHeader chi = listView1.Columns[i];
-                        if (ch.Text == chi.Text && ch.Tag == p)
-                        {
-                            ci = i;
-                            isMatch = true;
-                            break;
-                        }
-                        else ci += 1;
+                        Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
+                        row.Cells[p.Key].Value = p.Value;
+                    }
+                }
+            else if (View == ViewMode.LISTVIEW)
+                foreach (MediaFile mf in lMediaFiles)
+                {
+                    ListViewItem lvi = new ListViewItem();
+
+                    foreach (Parameter p in mf.lParams)
+                    {
+                        Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
+                        lvi.SubItems.Add(p.Value);
                     }
 
-                    if (!isMatch)
-                        listView1.Columns.Add(ch);
-
-                    while (lvi.SubItems.Count <= ci)
-                        lvi.SubItems.Add("");
-
-                    lvi.SubItems[ci].Text = p.Value;
-                    lvi.SubItems[ci].BackColor = GetBackgroundColor(p.StreamKind);
-
-
+                    listView1.Items.Add(lvi);
                 }
-                listView1.Items.Add(lvi);
-            }
 
             UpdateUI(false);
 
@@ -246,20 +303,44 @@ namespace MediaExplorer
         {
             if (isLoading)
             {
-                listView1.Items.Clear();
-                listView1.Columns.Clear();
-                lMediaFiles.Clear();
-                listView1.Columns.Add("Name");  //not part of mediainfolib
+                if (View == ViewMode.LISTVIEW)
+                {
+                    listView1.Items.Clear();
+                    listView1.Columns.Clear();
+                    lMediaFiles.Clear();
+                    listView1.Columns.Add("Name");  //not part of mediainfolib
 
-                TextBoxPath.Refresh();
-                TextBoxPath.Enabled = false;
-                listView1.Visible = false;
-                splitContainer1.Panel2.Refresh();
+                    TextBoxPath.Refresh();
+                    TextBoxPath.Enabled = false;
+                    listView1.Visible = false;
+                    splitContainer1.Panel2.Refresh();
+                } else if (View == ViewMode.DATAGRID)
+                {
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Visible = false;
+                    TextBoxPath.Refresh();
+                    TextBoxPath.Enabled = false;
+                    splitContainer1.Panel2.Refresh();
+                }
             } else
             {
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-                listView1.Visible = true;
-                TextBoxPath.Enabled = true;
+                if (View == ViewMode.LISTVIEW)
+                {
+                    listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                    listView1.Visible = true;
+                    TextBoxPath.Enabled = true;
+                    Console.WriteLine(listView1.Items.Count);
+                }
+                else if (View == ViewMode.DATAGRID)
+                {
+                    dataGridView1.AutoResizeColumns();
+                    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                    dataGridView1.Visible = true;
+                    dataGridView1.BringToFront();
+                    Console.WriteLine(dataGridView1.RowCount);
+                }
+
             } 
         }
         private Color GetBackgroundColor(StreamKind sk)
@@ -382,7 +463,38 @@ namespace MediaExplorer
         //    Console.WriteLine("Container format is " + MI.Get(StreamKind.General, 0, "Format"));
         //    return "Container format is " + MI.Get(StreamKind.General, 0, "Format");
         //}
+        private void LoadTreeview()
+        {
+            CreateDirectoryNode(null, new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));    //list all common folders
 
+            foreach (DriveInfo di in DriveInfo.GetDrives())
+                CreateDirectoryNode(null, di.RootDirectory);
+        }
+        private void CreateDirectoryNode(TreeNode node, DirectoryInfo di)
+        {
+            TreeNode directoryNode;
+
+            if (node == null)
+            {
+                directoryNode = new TreeNode() { Text = di.Name, Tag = di };
+                treeView1.Nodes.Add(directoryNode);
+            }
+            else directoryNode = node;
+
+            directoryNode.Nodes.Clear();
+
+            try
+            {
+                foreach (DirectoryInfo d in di.GetDirectories())
+                    if ((d.Attributes & FileAttributes.Hidden) == 0)
+                    {
+                        directoryNode.Nodes.Add(new TreeNode() { Text = d.Name, Tag = d });
+                        directoryNode.Expand();
+                    }
+
+            }
+            catch (Exception) { }
+        }
         private void ButtonBack_Click(object sender, EventArgs e)
         {
             int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
@@ -431,6 +543,16 @@ namespace MediaExplorer
         {
             DirectoryInfo di = treeView1.SelectedNode.Tag as DirectoryInfo;
             Path = di.FullName;
+        }
+
+        private void ToolStripMenuItemDGW_Click(object sender, EventArgs e)
+        {
+            View = ViewMode.DATAGRID;
+        }
+
+        private void ToolStripMenuItemLW_Click(object sender, EventArgs e)
+        {
+            View = ViewMode.LISTVIEW;
         }
     }
 }

@@ -39,7 +39,6 @@ namespace MediaExplorer
         private readonly MediaInfo MI = new MediaInfo();
         private readonly List<MediaFile> lMediaFiles = new List<MediaFile>();
         private readonly List<DirectoryInfo> lDirHistory = new List<DirectoryInfo>();
-
         private Dictionary<string, string> DictKeysDef = new Dictionary<string, string>();
 
         public WindowDg()
@@ -216,9 +215,7 @@ namespace MediaExplorer
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                }
-
-                
+                }   
             }
         }
         private void LoadMediaData()

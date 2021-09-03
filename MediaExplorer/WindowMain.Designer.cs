@@ -45,10 +45,11 @@ namespace MediaExplorer
             this.TextBoxPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.lblLoading = new System.Windows.Forms.Label();
             this.contextMenuTree = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.scanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemDGW = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemLW = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tablePanRoot.SuspendLayout();
             this.tablePanToolbar.SuspendLayout();
@@ -81,9 +82,12 @@ namespace MediaExplorer
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemDGW,
+            this.ToolStripMenuItemLW});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Text = "View";
             // 
             // tablePanRoot
             // 
@@ -232,7 +236,6 @@ namespace MediaExplorer
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.listView1);
             this.splitContainer1.Panel2.Controls.Add(this.lblLoading);
             this.splitContainer1.Size = new System.Drawing.Size(1044, 590);
             this.splitContainer1.SplitterDistance = 211;
@@ -248,29 +251,13 @@ namespace MediaExplorer
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             this.treeView1.Click += new System.EventHandler(this.TreeView1_Click);
             // 
-            // listView1
-            // 
-            this.listView1.CheckBoxes = true;
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.FullRowSelect = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(829, 590);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
             // lblLoading
             // 
-            this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblLoading.AutoSize = true;
+            this.lblLoading.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoading.Location = new System.Drawing.Point(366, 295);
+            this.lblLoading.Location = new System.Drawing.Point(0, 0);
             this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(93, 24);
+            this.lblLoading.Size = new System.Drawing.Size(829, 590);
             this.lblLoading.TabIndex = 0;
             this.lblLoading.Text = "Loading...";
             this.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -288,6 +275,24 @@ namespace MediaExplorer
             this.scanToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.scanToolStripMenuItem.Text = "Scan";
             this.scanToolStripMenuItem.Click += new System.EventHandler(this.ScanToolStripMenuItem_Click);
+            // 
+            // ToolStripMenuItemDGW
+            // 
+            this.ToolStripMenuItemDGW.Checked = true;
+            this.ToolStripMenuItemDGW.CheckOnClick = true;
+            this.ToolStripMenuItemDGW.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ToolStripMenuItemDGW.Name = "ToolStripMenuItemDGW";
+            this.ToolStripMenuItemDGW.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemDGW.Text = "DataGrid";
+            this.ToolStripMenuItemDGW.Click += new System.EventHandler(this.ToolStripMenuItemDGW_Click);
+            // 
+            // ToolStripMenuItemLW
+            // 
+            this.ToolStripMenuItemLW.CheckOnClick = true;
+            this.ToolStripMenuItemLW.Name = "ToolStripMenuItemLW";
+            this.ToolStripMenuItemLW.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemLW.Text = "ListView";
+            this.ToolStripMenuItemLW.Click += new System.EventHandler(this.ToolStripMenuItemLW_Click);
             // 
             // WindowMain
             // 
@@ -310,7 +315,6 @@ namespace MediaExplorer
             this.tableLayoutPanel2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuTree.ResumeLayout(false);
@@ -337,9 +341,10 @@ namespace MediaExplorer
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Label lblLoading;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ContextMenuStrip contextMenuTree;
         private System.Windows.Forms.ToolStripMenuItem scanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDGW;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLW;
     }
 }
 
