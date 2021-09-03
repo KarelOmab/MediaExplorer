@@ -1,3 +1,4 @@
+
 # MediaExplorer
 MediaExplorer is a windows application that effectively combines explorer and MediaInfo library.
  - C# WinForms
@@ -6,9 +7,13 @@ MediaExplorer is a windows application that effectively combines explorer and Me
 
 # Download
 
-Download the latest version (1.0.0.1) [click here](https://github.com/KarelOmab/MediaExplorer/releases/download/Publish/MediaExplorer_1.0.0.1.zip)
+Download the latest version (1.0.1.0) [click here](https://github.com/KarelOmab/MediaExplorer/releases/tag/v1.0.1.1)
 
 # Latest Changes
+September 3, 2021
+ - Basic datagridview control to present data (**default viewmode**)
+ - Ability to change viewmode from menustrip
+ 
 September 2, 2021
  - Basic toolbar menu to help navigate back, forth, refresh or type folder path (requires 'Enter' key just like explorer)
  - Basic treeview control to navigate directories
@@ -18,11 +23,12 @@ September 2, 2021
 - [x] Basic toolbar menu to help navigate back, forth, refresh or type folder path
 - [x] Basic treeview control to navigate directories
 - [x] Basic listview control to present data
-- [ ] Big data rendering issues
+- [x] Basic datagridview control to present data
+- [ ] Implement backgroundworker(s)
 - [ ] Data filters
 - [ ] Column sort
 - [ ] Export data to file
 - [ ] Loading animation
 - [ ] Ability to choose the type of MediaInfo query
 - [ ] Icons for application, treeview nodes and menu buttons
-- [ ] Ability to execute file operations with checked items
+- [ ] Ability to execute file operations with selected rows
