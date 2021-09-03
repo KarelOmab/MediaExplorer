@@ -1,15 +1,35 @@
-﻿using MediaInfoLib;
+﻿/*
+ * MediaExplorer - A windows application that effectively combines explorer and MediaInfo library.
+ * 
+ *  https://github.com/KarelOmab/MediaExplorer
+ *
+ * Author: Karel Tutsu
+ * Date: September 3, 2021
+ *
+ * Copyright (C) 2021 Karel Tutsu
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, 
+ * sublicense, and/or sell copies of the Software, 
+ * and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+
+using MediaInfoLib;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.ListViewItem;
 
 namespace MediaExplorer
 {
@@ -65,7 +85,6 @@ namespace MediaExplorer
                 }
             }
         }
-
         private string _path;
         public string Path
         {
@@ -87,28 +106,23 @@ namespace MediaExplorer
             }
         }
 
-
-
         private readonly MediaInfo MI = new MediaInfo();
         private readonly List<MediaFile> lMediaFiles = new List<MediaFile>();
         private readonly List<DirectoryInfo> lDirHistory = new List<DirectoryInfo>();
-        private Dictionary<string, string> DictKeysDef = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> DictKeysDef = new Dictionary<string, string>();
 
-        private ListView listView1;
-        private DataGridView dataGridView1;
+        private readonly ListView listView1;
+        private readonly DataGridView dataGridView1;
 
         public WindowMain()
         {
             InitializeComponent();
 
-            listView1 = new ListView();
-            listView1.View = System.Windows.Forms.View.Details;
-            listView1.Dock = DockStyle.Fill;
+            listView1 = new ListView() { View = System.Windows.Forms.View.Details , Dock = DockStyle.Fill } ;
             System.Reflection.PropertyInfo p = typeof(ListView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             p.SetValue(listView1, true, null);
 
-            dataGridView1 = new DataGridView();
-            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1 = new DataGridView() { Dock = DockStyle.Fill };
             p = typeof(DataGridView).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             p.SetValue(dataGridView1, true, null);
 
@@ -129,7 +143,7 @@ namespace MediaExplorer
 
             Text += " - " + Application.ProductVersion;
 
-            Path = @"D:\Disk1\Example\child";
+            //Path = @"D:\Disk1\Example\child";
             LoadTreeview();
         }
 
@@ -143,7 +157,6 @@ namespace MediaExplorer
                     MediaFile mf = new MediaFile(f);
                     List<string> lKeys = new List<string>();
                     MI.Open(f);
-
                     MI.Option("Complete", "1");
 
                     foreach (string line in MI.Inform().Split('\n'))
@@ -153,7 +166,6 @@ namespace MediaExplorer
                             string[] kv = line.Split(':');
                             string k = kv[0].Trim();
                             string v = string.Join(":", kv.Skip(1)).Trim(); //properties like 'Display aspect ratio' includes colon so we have to put it back
-
                             string modkey = string.Format("{0}_{1}{2}", sk.ToString(), k, lKeys.FindAll(x => x == k).Count.ToString());
 
                             bool isMatch = false;
@@ -207,12 +219,9 @@ namespace MediaExplorer
                                     break;
                             }
                         }
-
                     }
                     MI.Close();
-
                     lMediaFiles.Add(mf);
-
                 }
                 catch (Exception ex)
                 {
@@ -222,9 +231,11 @@ namespace MediaExplorer
         }
         private void LoadMediaData()
         {
+#if DEBUG       
+
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
-
+#endif
             //process files in directory
             if (Directory.Exists(Path))
             {
@@ -236,7 +247,7 @@ namespace MediaExplorer
                     listView1.Visible = false;
 
                 splitContainer1.Panel2.Refresh();
-
+                TextBoxPath.Refresh();
 
                 DirectoryInfo di = new DirectoryInfo(Path);
                 bool isMatched = false;
@@ -264,9 +275,13 @@ namespace MediaExplorer
                 LoadRows();
 
             }
+
+#if DEBUG
             watch.Stop();
 
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+
+#endif
         }
         private void LoadColumns()
         {
@@ -275,9 +290,6 @@ namespace MediaExplorer
                 dataGridView1.Columns.Clear();
                 dataGridView1.Rows.Clear();
 
-                TextBoxPath.Refresh();
-                splitContainer1.Panel2.Refresh();
-
                 foreach (KeyValuePair<string, string> keyval in DictKeysDef)
                     dataGridView1.Columns.Add(keyval.Key, keyval.Value);
             }
@@ -285,9 +297,6 @@ namespace MediaExplorer
             {
                 listView1.Items.Clear();
                 listView1.Columns.Clear();
-
-                TextBoxPath.Refresh();
-                splitContainer1.Panel2.Refresh();
 
                 foreach (KeyValuePair<string, string> keyval in DictKeysDef)
                     listView1.Columns.Add(new ColumnHeader() { Text = keyval.Value, Name = keyval.Key });
@@ -321,20 +330,20 @@ namespace MediaExplorer
             {
                 foreach (MediaFile mf in lMediaFiles)
                 {
-                    ListViewItem lvi = new ListViewItem();
+                    ListViewItem lvi = new ListViewItem() { UseItemStyleForSubItems = false };
 
                     foreach (Parameter p in mf.lParams)
                     {
+#if DEBUG   
                         Console.WriteLine(p.Index + " [ " + p.StreamKind + " ] " + p.Key + " -> " + p.Value);
-
-                        Console.WriteLine(listView1.Columns.Count);
-
+#endif
                         int ci = listView1.Columns.IndexOfKey(p.Key);
 
                         while (lvi.SubItems.Count <= ci)
                             lvi.SubItems.Add("");
 
                         lvi.SubItems[ci].Text = p.Value;
+                        lvi.SubItems[ci].BackColor = GetBackgroundColor(p.StreamKind);
                     }
 
                     listView1.Items.Add(lvi);
@@ -342,11 +351,9 @@ namespace MediaExplorer
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 listView1.Visible = true;
                 listView1.BringToFront();
-            }
-                
+            }     
         }
 
-        
         private Color GetBackgroundColor(StreamKind sk)
         {
             if (sk == StreamKind.Audio)
@@ -366,6 +373,97 @@ namespace MediaExplorer
 
             return Color.White;
         }
+        private void LoadTreeview()
+        {
+            CreateDirectoryNode(null, new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));    //list all common folders
+
+            foreach (DriveInfo di in DriveInfo.GetDrives())
+                CreateDirectoryNode(null, di.RootDirectory);
+        }
+        private void CreateDirectoryNode(TreeNode node, DirectoryInfo di)
+        {
+            TreeNode directoryNode;
+
+            if (node == null)
+            {
+                directoryNode = new TreeNode() { Text = di.Name, Tag = di };
+                treeView1.Nodes.Add(directoryNode);
+            } else directoryNode = node;
+
+            directoryNode.Nodes.Clear();
+
+            try
+            {
+                foreach (DirectoryInfo d in di.GetDirectories())
+                    if ((d.Attributes & FileAttributes.Hidden) == 0)
+                    {
+                        directoryNode.Nodes.Add(new TreeNode() { Text = d.Name, Tag = d });
+                        directoryNode.Expand();
+                    }
+
+            }
+            catch (Exception) { }
+        }
+        private void ButtonBack_Click(object sender, EventArgs e)
+        {
+            int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
+            if (ci > 0)
+                DirHistoryIndex = ci - 1;
+        }
+
+        private void ButtonForward_Click(object sender, EventArgs e)
+        {
+            int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
+            if (ci < lDirHistory.Count - 1)
+                DirHistoryIndex = ci + 1;
+        }
+
+        private void ButtonUp_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo dInfo = new DirectoryInfo(Path);
+            if (dInfo.Parent != null) Path = dInfo.Parent.FullName;
+        }
+
+        private void ButtonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadMediaData();
+        }
+
+        private void TextBoxPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                Path = TextBoxPath.Text;
+        }
+        private void TreeView1_Click(object sender, EventArgs e)
+        {
+            MouseEventArgs me = e as MouseEventArgs;
+
+            if (me.Button == MouseButtons.Right)
+                contextMenuTree.Show(Cursor.Position);
+        }
+
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            CreateDirectoryNode(e.Node, e.Node.Tag as DirectoryInfo);
+            e.Node.Expand();
+        }
+
+        private void ScanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo di = treeView1.SelectedNode.Tag as DirectoryInfo;
+            Path = di.FullName;
+        }
+
+        private void ToolStripMenuItemDGW_Click(object sender, EventArgs e)
+        {
+            View = ViewMode.DATAGRID;
+        }
+
+        private void ToolStripMenuItemLW_Click(object sender, EventArgs e)
+        {
+            View = ViewMode.LISTVIEW;
+        }
+
         //private void ExampleQuery(string f)
         //{
         //    //Test if version of DLL is compatible : 3rd argument is "version of DLL tested;Your application name;Your application version"
@@ -467,96 +565,5 @@ namespace MediaExplorer
         //    Console.WriteLine("Container format is " + MI.Get(StreamKind.General, 0, "Format"));
         //    return "Container format is " + MI.Get(StreamKind.General, 0, "Format");
         //}
-        private void LoadTreeview()
-        {
-            CreateDirectoryNode(null, new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));    //list all common folders
-
-            foreach (DriveInfo di in DriveInfo.GetDrives())
-                CreateDirectoryNode(null, di.RootDirectory);
-        }
-        private void CreateDirectoryNode(TreeNode node, DirectoryInfo di)
-        {
-            TreeNode directoryNode;
-
-            if (node == null)
-            {
-                directoryNode = new TreeNode() { Text = di.Name, Tag = di };
-                treeView1.Nodes.Add(directoryNode);
-            }
-            else directoryNode = node;
-
-            directoryNode.Nodes.Clear();
-
-            try
-            {
-                foreach (DirectoryInfo d in di.GetDirectories())
-                    if ((d.Attributes & FileAttributes.Hidden) == 0)
-                    {
-                        directoryNode.Nodes.Add(new TreeNode() { Text = d.Name, Tag = d });
-                        directoryNode.Expand();
-                    }
-
-            }
-            catch (Exception) { }
-        }
-        private void ButtonBack_Click(object sender, EventArgs e)
-        {
-            int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
-            if (ci > 0)
-                DirHistoryIndex = ci - 1;
-        }
-
-        private void ButtonForward_Click(object sender, EventArgs e)
-        {
-            int ci = lDirHistory.IndexOf(lDirHistory.Find(d => d.FullName == Path));
-            if (ci < lDirHistory.Count - 1)
-                DirHistoryIndex = ci + 1;
-        }
-
-        private void ButtonUp_Click(object sender, EventArgs e)
-        {
-            DirectoryInfo dInfo = new DirectoryInfo(Path);
-            if (dInfo.Parent != null) Path = dInfo.Parent.FullName;
-        }
-
-        private void ButtonRefresh_Click(object sender, EventArgs e)
-        {
-            LoadMediaData();
-        }
-
-        private void TextBoxPath_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                Path = TextBoxPath.Text;
-        }
-        private void TreeView1_Click(object sender, EventArgs e)
-        {
-            MouseEventArgs me = e as MouseEventArgs;
-
-            if (me.Button == MouseButtons.Right)
-                contextMenuTree.Show(Cursor.Position);
-        }
-
-        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            CreateDirectoryNode(e.Node, e.Node.Tag as DirectoryInfo);
-            e.Node.Expand();
-        }
-
-        private void ScanToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DirectoryInfo di = treeView1.SelectedNode.Tag as DirectoryInfo;
-            Path = di.FullName;
-        }
-
-        private void ToolStripMenuItemDGW_Click(object sender, EventArgs e)
-        {
-            View = ViewMode.DATAGRID;
-        }
-
-        private void ToolStripMenuItemLW_Click(object sender, EventArgs e)
-        {
-            View = ViewMode.LISTVIEW;
-        }
     }
 }

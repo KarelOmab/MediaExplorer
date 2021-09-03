@@ -52,12 +52,6 @@
     <Compile Include="MediaFile.cs" />
     <Compile Include="MediaInfoDLL.cs" />
     <Compile Include="Parameter.cs" />
-    <Compile Include="WindowDg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WindowDg.Designer.cs">
-      <DependentUpon>WindowDg.cs</DependentUpon>
-    </Compile>
     <Compile Include="WindowMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,9 +69,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="WindowDg.resx">
-      <DependentUpon>WindowDg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="WindowMain.resx">
       <DependentUpon>WindowMain.cs</DependentUpon>
     </EmbeddedResource>
