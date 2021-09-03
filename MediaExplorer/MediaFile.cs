@@ -9,6 +9,7 @@ namespace MediaExplorer
     public class MediaFile
     {
         public string Name { get; set; }
+        public string Type { get; set; }
         public List<Parameter> lParams = new List<Parameter>();
 
         public MediaFile(string n)
