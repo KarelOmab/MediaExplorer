@@ -1,6 +1,6 @@
 
 # MediaExplorer
-MediaExplorer is a windows application that allows you to fetch and display [MediaInfo](https://mediaarea.net/en/MediaInfo) data for a list of files, as opposed to single file at a time.
+MediaExplorer is a windows application that allows you to fetch and display [MediaInfo](https://mediaarea.net/en/MediaInfo) data for a list of files, as opposed to one file at a time.
  - C# WinForms
  - .NET Framework 4.8
  - MediaInfoLib v 21.3
